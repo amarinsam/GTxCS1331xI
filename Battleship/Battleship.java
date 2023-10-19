@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Arrays;
 
 // prompt 10 coordinates
 // create two 5x5 ship location grids
@@ -10,40 +11,61 @@ public class Battleship {
 	Scanner input = new Scanner(System.in);
 	System.out.println("Welcome to Battleship!");
 
-	// grid
-	int[] ship1xy = new int[2];
-	int[][] player1Grid = new int[5][5];
-	System.out.println("PLAYER 1, ENTER YOUR SHIPS’ COORDINATES.");
+	// Declare grids
+	char[][] player1Grid = new char[5][5];
+	char[][] player2Grid = new char[5][5];
+	char[][][] players = new char[][][]{
+	player1Grid, player2Grid
+	};
 
-	
-	// check if exists
+	// LIST OF PROMPTS 1-5
+	String[] shipPrompts = new String[]{
+		"Enter ship 1 location:",
+		"Enter ship 2 location:",
+		"Enter ship 3 location:",
+		"Enter ship 4 location:",
+		"Enter ship 5 location:"
+	};
 
-	System.out.println("Enter ship 1 location:");
-	System.out.println("Enter ship 2 location:");
-	System.out.println("Enter ship 3 location:");
-	System.out.println("Enter ship 4 location:");
-	System.out.println("Enter ship 5 location:");
-
-	printBattleShip();
-	}
-
-	public static int[][] placeShips(String desiredCoordinates){
-		if (input.hasNextInt()){
-			xCoordinate = input.nextInt(); // refactor this so that it's just a single method
-			if (input.hasNextInt()){
-				yCoordinate = input.nextInt();
-				player1Grid[xCoordinate][yCoordinate] = "@";
-			} else {
-				System.out.println("Invalid coordinates. Choose different coordinates.");
-			}
-		} else {
-			System.out.println("Invalid coordinates. Choose different coordinates.");
+	int playerNum = 1;
+	for (char[][] playerGrid : players){
+	System.out.println("PLAYER " + playerNum + ", ENTER YOUR SHIPS’ COORDINATES.");
+		for (String element : shipPrompts){
+			boolean exit = false;
+				do{
+					System.out.println(element);
+					if (input.hasNextInt()){
+						int xCoordinate = input.nextInt(); // refactor this so that it's just a single method
+						if (input.hasNextInt()){
+							int yCoordinate = input.nextInt();
+							if (xCoordinate > 4 || yCoordinate > 4){
+								System.out.println("Invalid coordinates. Choose different coordinates.");
+							} else {
+								if ((char)playerGrid[xCoordinate][yCoordinate] != '@'){
+								playerGrid[xCoordinate][yCoordinate] = '@';
+								exit = true;
+								} else {
+									System.out.println("You already have a ship there. Choose different coordinates.");
+								}	
+							}
+						} else {
+							System.out.println("Invalid coordinates. Choose different coordinates.");
+						}
+					} else {
+						System.out.println("Invalid coordinates. Choose different coordinates.");
+					}				
+				} while (exit == false);
 		}
-		return player1Grid;
+		playerNum++;
+	}
+	System.out.print(Arrays.toString(player1Grid));
+
+	// placeShip();
 	}
 
 	// likely need to convert array to char to print player[row][column]
 	// Use this method to print game boards to the console.
+	/*
 	private static void printBattleShip(char[][] player) {
 		System.out.print("  ");
 		for (int row = -1; row < 5; row++) {
@@ -60,4 +82,5 @@ public class Battleship {
 			System.out.println("");
 		}
 	}
+	*/
 }
