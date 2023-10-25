@@ -38,10 +38,10 @@ public class Battleship {
 		int playerNum = 1;
 		for (char[][] playerGrid : players){
 		System.out.println("PLAYER " + playerNum + ", ENTER YOUR SHIPS’ COORDINATES.");
-			for (String element : shipPrompts){
+			for (String prompt : shipPrompts){
 				boolean exit = false;
 					do {
-						System.out.println(element);
+						System.out.println(prompt);
 						if (input.hasNextInt()){
 							int xCoordinate = input.nextInt(); // refactor this so that it's just a single method
 							if (input.hasNextInt()){
@@ -49,19 +49,22 @@ public class Battleship {
 								if (xCoordinate > 4 || yCoordinate > 4){
 									System.out.println("Invalid coordinates. Choose different coordinates.");
 								} else {
-									if ((char)playerGrid[xCoordinate][yCoordinate] != '@'){
+									if (playerGrid[xCoordinate][yCoordinate] != '@'){
 									playerGrid[xCoordinate][yCoordinate] = '@';
 									exit = true;
 									} else {
 										System.out.println("You already have a ship there. Choose different coordinates.");
-									}	
+									}
 								}
 							} else {
 								System.out.println("Invalid coordinates. Choose different coordinates.");
+								
 							}
 						} else {
 							System.out.println("Invalid coordinates. Choose different coordinates.");
-						}				
+							break;
+						} // need to clear out the data stream, likely to flush out x and y coord?
+						// note down how to check equality with chars
 					} while (exit == false);
 			}
 			// fill and render board after each player inputs pieces
