@@ -85,10 +85,10 @@ public class Calculator{
 					System.out.print("Answer: Chicken or Egg.");
 				} else {
 					if ((word1.toLowerCase().compareTo(word2.toLowerCase())) < 0){
-					System.out.print(word1 + " comes before " + word2 + " alphabetically.");					
+					System.out.print("Answer: " + word1 + " comes before " + word2 + " alphabetically.");					
 					}
 					if ((word1.toLowerCase().compareTo(word2.toLowerCase())) > 0){
-					System.out.print(word2 + " comes before " + word1 + " alphabetically.");					
+					System.out.print("Answer: " + word2 + " comes before " + word1 + " alphabetically.");					
 					}
 				}
 				break;

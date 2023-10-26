@@ -48,6 +48,7 @@ public class Battleship {
 								int yCoordinate = input.nextInt();
 								if (xCoordinate > 4 || yCoordinate > 4){
 									System.out.println("Invalid coordinates. Choose different coordinates.");
+									input.next();
 								} else {
 									if (playerGrid[xCoordinate][yCoordinate] != '@'){
 									playerGrid[xCoordinate][yCoordinate] = '@';
@@ -58,11 +59,11 @@ public class Battleship {
 								}
 							} else {
 								System.out.println("Invalid coordinates. Choose different coordinates.");
-								
+								input.next();
 							}
 						} else {
 							System.out.println("Invalid coordinates. Choose different coordinates.");
-							break;
+							input.next();
 						} // need to clear out the data stream, likely to flush out x and y coord?
 						// note down how to check equality with chars
 					} while (exit == false);
@@ -134,9 +135,11 @@ public class Battleship {
 						}
 					} else {
 						System.out.println("Invalid coordinates. Choose different coordinates.");
+						input.next();
 					}
 				} else {
 					System.out.println("Invalid coordinates. Choose different coordinates.");
+					input.next();
 				}
 			} while (exit == false);
 			printBattleShip(currentAttackedGrid);
