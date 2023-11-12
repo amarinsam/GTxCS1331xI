@@ -46,24 +46,32 @@ public class Battleship {
 							int xCoordinate = input.nextInt(); // refactor this so that it's just a single method
 							if (input.hasNextInt()){
 								int yCoordinate = input.nextInt();
-								if (xCoordinate > 4 || yCoordinate > 4){
+								if (xCoordinate > 4 || yCoordinate > 4 || xCoordinate < 0 || yCoordinate < 0){
 									System.out.println("Invalid coordinates. Choose different coordinates.");
-									input.next();
+									input.nextLine();
+									continue;
 								} else {
+									System.out.println("5");
 									if (playerGrid[xCoordinate][yCoordinate] != '@'){
 									playerGrid[xCoordinate][yCoordinate] = '@';
 									exit = true;
 									} else {
+										System.out.println("6");
 										System.out.println("You already have a ship there. Choose different coordinates.");
+										input.nextLine();
+										continue;
+
 									}
 								}
 							} else {
 								System.out.println("Invalid coordinates. Choose different coordinates.");
-								input.next();
+								input.nextLine();
+								continue;
 							}
 						} else {
 							System.out.println("Invalid coordinates. Choose different coordinates.");
-							input.next();
+							input.nextLine();
+							continue;
 						} // need to clear out the data stream, likely to flush out x and y coord?
 						// note down how to check equality with chars
 					} while (exit == false);
@@ -102,7 +110,6 @@ public class Battleship {
 		char[][] currentAttackedGrid = player2Grid;
 		playerNum = 1;
 		int opposingPlayer = 2;
-		System.out.println(Arrays.toString(currentAttackedGrid));
 
 		do {
 			boolean exit = false;
@@ -117,14 +124,18 @@ public class Battleship {
 						int yCoordinate = input.nextInt();
 						if (xCoordinate > 4 || yCoordinate > 4){
 							System.out.println("Invalid coordinates. Choose different coordinates.");
+							input.nextLine();
+							continue;
 						} else {
-							if (currentAttackedGrid[xCoordinate][yCoordinate] == '0' || 
+							if (currentAttackedGrid[xCoordinate][yCoordinate] == 'O' ||
 							currentAttackedGrid[xCoordinate][yCoordinate] == 'X'){
 								System.out.println("You already fired on this spot.  Choose different coordinates.");
+								input.nextLine();
+								continue;
 							} else {
 								if (currentAttackedGrid[xCoordinate][yCoordinate] == '-'){
 								System.out.println("PLAYER " + playerNum + " MISSED!");
-								currentAttackedGrid[xCoordinate][yCoordinate] = '0';
+								currentAttackedGrid[xCoordinate][yCoordinate] = 'O';
 								}
 								if (currentAttackedGrid[xCoordinate][yCoordinate] == '@'){
 									System.out.println("PLAYER " + playerNum + " HIT PLAYER " + opposingPlayer + "'s SHIP!");
@@ -135,11 +146,13 @@ public class Battleship {
 						}
 					} else {
 						System.out.println("Invalid coordinates. Choose different coordinates.");
-						input.next();
+						input.nextLine();
+						continue;
 					}
 				} else {
 					System.out.println("Invalid coordinates. Choose different coordinates.");
-					input.next();
+					input.nextLine();
+					continue;
 				}
 			} while (exit == false);
 			printBattleShip(currentAttackedGrid);
@@ -151,12 +164,20 @@ public class Battleship {
 					if (currentAttackedGrid[i][e] == 'X'){
 						countOfX++;
 					}
-					if (countOfX == 5){
-						allShipsHit = true;
-						System.out.println("PLAYER " + playerNum + " WINS! YOU SUNK ALL OF YOUR OPPONENT'S SHIPS!");
-					}
+
 				}
 			}
+			if (countOfX == 5){
+						allShipsHit = true;
+						System.out.println("PLAYER " + playerNum + " WINS! YOU SUNK ALL OF YOUR OPPONENT'S SHIPS!");
+						System.out.println("");
+						System.out.println("Final Boards:");
+						System.out.println("");
+						printBattleShip(player1Grid);
+						System.out.println("");
+						printBattleShip(player2Grid);
+						System.out.println("");
+					}
 			// Switch Players
 			if (currentAttackedGrid == player2Grid){
 				currentAttackedGrid = player1Grid;
@@ -168,7 +189,7 @@ public class Battleship {
 				opposingPlayer = 2;
 			}
 		} while (allShipsHit == false);
-		
+
 	}
 
 	// likely need to convert array to char to print player[row][column]
