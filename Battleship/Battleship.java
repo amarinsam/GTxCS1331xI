@@ -19,10 +19,10 @@ public class Battleship {
 		};
 
 		// Declare Target History Boards
-		char[][] player1History = new char[5][5];
-		char[][] player2History = new char[5][5];
+		char[][] player1View = new char[5][5];
+		char[][] player2View = new char[5][5];
 		char[][][] gameHistory = new char[][][]{
-			player1Grid, player2Grid
+			player1View, player2View
 		};
 
 		// LIST OF PROMPTS 1-5
@@ -51,12 +51,10 @@ public class Battleship {
 									input.nextLine();
 									continue;
 								} else {
-									System.out.println("5");
 									if (playerGrid[xCoordinate][yCoordinate] != '@'){
 									playerGrid[xCoordinate][yCoordinate] = '@';
 									exit = true;
 									} else {
-										System.out.println("6");
 										System.out.println("You already have a ship there. Choose different coordinates.");
 										input.nextLine();
 										continue;
@@ -104,10 +102,19 @@ public class Battleship {
 		// end ship input loop
 		}
 
+		for (int i = 0; i < gameHistory.length; i++){
+			for (int e = 0; e < gameHistory[i].length; e++){
+				for (int y = 0; y < gameHistory[i][e].length; y++){
+					gameHistory[i][e][y] = '-';
+				}
+			}
+		}
+
 		// Game Engine
 		// Winning states
 		boolean allShipsHit = false;
 		char[][] currentAttackedGrid = player2Grid;
+		char[][] currentPlayerView = player1View;
 		playerNum = 1;
 		int opposingPlayer = 2;
 
@@ -129,17 +136,20 @@ public class Battleship {
 						} else {
 							if (currentAttackedGrid[xCoordinate][yCoordinate] == 'O' ||
 							currentAttackedGrid[xCoordinate][yCoordinate] == 'X'){
-								System.out.println("You already fired on this spot.  Choose different coordinates.");
+								System.out.println("You already fired on this spot. Choose different coordinates.");
 								input.nextLine();
 								continue;
 							} else {
 								if (currentAttackedGrid[xCoordinate][yCoordinate] == '-'){
 								System.out.println("PLAYER " + playerNum + " MISSED!");
-								currentAttackedGrid[xCoordinate][yCoordinate] = 'O';
+								currentAttackedGrid[xCoordinate][yCoordinate] = 'O'; // just updated this
+								currentPlayerView[xCoordinate][yCoordinate] = 'O';
 								}
 								if (currentAttackedGrid[xCoordinate][yCoordinate] == '@'){
+									// might need to add a
 									System.out.println("PLAYER " + playerNum + " HIT PLAYER " + opposingPlayer + "'s SHIP!");
 									currentAttackedGrid[xCoordinate][yCoordinate] = 'X';
+									currentPlayerView[xCoordinate][yCoordinate] = 'X';
 								}
 								exit = true;
 							}
@@ -155,7 +165,7 @@ public class Battleship {
 					continue;
 				}
 			} while (exit == false);
-			printBattleShip(currentAttackedGrid);
+			printBattleShip(currentPlayerView);
 			System.out.println("");
 			// Check Win Condition
 			int countOfX = 0;
@@ -171,7 +181,7 @@ public class Battleship {
 						allShipsHit = true;
 						System.out.println("PLAYER " + playerNum + " WINS! YOU SUNK ALL OF YOUR OPPONENT'S SHIPS!");
 						System.out.println("");
-						System.out.println("Final Boards:");
+						System.out.println("Final boards:");
 						System.out.println("");
 						printBattleShip(player1Grid);
 						System.out.println("");
@@ -181,10 +191,12 @@ public class Battleship {
 			// Switch Players
 			if (currentAttackedGrid == player2Grid){
 				currentAttackedGrid = player1Grid;
+				currentPlayerView = player2View;
 				playerNum = 2;
 				opposingPlayer = 1;
 			} else {
 				currentAttackedGrid = player2Grid;
+				currentPlayerView = player1View;
 				playerNum = 1;
 				opposingPlayer = 2;
 			}
